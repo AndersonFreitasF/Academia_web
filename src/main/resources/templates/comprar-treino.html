@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Comprar Treino</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/estilos.css">
+	<style>
+		/* Estilos para garantir alinhamento e espaçamento adequados */
+		.table th,
+		.table td {
+			text-align: center;
+			/* Centraliza o conteúdo da célula */
+			vertical-align: middle;
+			/* Alinha verticalmente o conteúdo da célula */
+		}
+
+		.action-buttons {
+			display: flex;
+			flex-direction: column;
+			/* Exibe os botões um em cima do outro */
+			gap: 10px;
+			/* Adiciona espaçamento entre os botões */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="header-custom">
+	    <div class="left-buttons">
+	        <button id="profileButton" class="btn" onclick="redirectToProfile()">Perfil</button>
+	    </div>
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+
+	<div class="content">
+		<div class="container">
+			<div class="title-text">
+				<h2>Comprar Treino</h2>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead style="background-color: var(--secondary-color); color: white;">
+						<tr class="table-header">
+							<th>Nome</th>
+
+							<th>Preço</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Loop para exibir os treinos disponíveis -->
+						<tr th:each="treino : ${treinos}">
+							<td th:text="${treino.nome}">Nome do Treino</td>
+
+							<td th:text="${treino.preco}">Preço</td>
+							<td>
+								<div class="action-buttons">
+									<!-- Botão para ver descrição do treino -->
+									<button class="btn btn-info btn-sm" data-toggle="modal"
+										data-target="#descricaoModal" th:data-treino-descricao="${treino.descricao}">
+										Ver Descrição
+									</button>
+									<!-- Botão para comprar treino -->
+									<button class="btn btn-success btn-sm" data-toggle="modal"
+										data-target="#confirmacaoModal" th:data-treino-id="${treino.id}">
+										Comprar
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Navegação de Páginas -->
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+						<a class="page-link" href="#" th:href="@{/aluno/comprar-treino(page=${currentPage - 1})}"
+							aria-disabled="${currentPage == 1}">
+							Anterior
+						</a>
+					</li>
+					<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+						th:classappend="${i == currentPage} ? 'active'">
+						<a class="page-link" href="#" th:href="@{/aluno/comprar-treino(page=${i})}" th:text="${i}">1</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+						<a class="page-link" href="#" th:href="@{/aluno/comprar-treino(page=${currentPage + 1})}"
+							aria-disabled="${currentPage == totalPages}">
+							Próxima
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+		<!-- Modal de Confirmação -->
+		<div class="modal fade" id="confirmacaoModal" tabindex="-1" aria-labelledby="confirmacaoModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="confirmacaoModalLabel">Confirmação de Compra</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Tem certeza de que deseja comprar este treino?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" id="confirmarCompraBtn">Confirmar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal para Exibir Descrição -->
+		<div class="modal fade" id="descricaoModal" tabindex="-1" aria-labelledby="descricaoModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="descricaoModalLabel">Descrição do Treino</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="descricaoBody">
+						<!-- Conteúdo dinâmico da descrição do treino -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Quando o botão "Ver Descrição" é clicado, carrega a descrição do treino a partir dos dados do elemento
+			$('button[data-target="#descricaoModal"]').on('click', function () {
+				var descricao = $(this).data('treino-descricao');
+				$('#descricaoBody').html('<p>' + descricao + '</p>');
+			});
+
+			// Quando o botão "Comprar" é clicado, armazena o ID do treino no botão de confirmação
+			$('button[data-target="#confirmacaoModal"]').on('click', function () {
+				treinoId = $(this).data('treino-id');
+			});
+
+			// Quando o botão "Confirmar" é clicado, faz a requisição AJAX para confirmar a compra
+			$('#confirmarCompraBtn').on('click', function () {
+				$.ajax({
+					url: '/treinos/' + treinoId + '/confirmar',
+					type: 'POST',
+					success: function (response) {
+						alert(response);
+						$('#confirmacaoModal').modal('hide');
+						location.reload();
+					},
+					error: function (xhr, status, error) {
+						console.error('Erro na compra:', error);
+						alert('Erro ao confirmar a compra.');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

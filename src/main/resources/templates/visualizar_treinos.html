@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Meus Treinos</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+	<div class="header-custom">
+	    <div class="left-buttons">
+	        <button id="profileButton" class="btn" onclick="redirectToProfile()">Perfil</button>
+	    </div>
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+	<div class="container">
+		<h2>Meus Treinos</h2>
+		<a href="/treinador/criar-treino" class="btn btn-primary mb-3">Criar Novo Treino</a>
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead style="background-color: var(--secondary-color); color: white;">
+					<tr>
+						<th>Nome</th>
+						<th>Descrição</th>
+						<th>Preço</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="treino : ${treinos}">
+						<td th:text="${treino.nome}">Nome do Treino</td>
+						<td th:text="${treino.descricao}">Descrição</td>
+						<td th:text="${treino.preco}">Preço</td>
+						<td>
+							<a href="#" th:href="@{/treinador/editar-treino/{id}(id=${treino.id})}"
+								class="btn btn-warning btn-sm">Editar</a>
+
+							<form th:action="@{/treinador/deletar-treino/{id}(id=${treino.id})}" method="post"
+								onsubmit="return confirmarDelecao();">
+								<input type="hidden" name="_method" value="delete">
+								<button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+							</form>
+
+
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script>
+		function confirmarDelecao(event) {
+		    if (!confirm("Tem certeza que deseja deletar este treino?")) {
+		        event.preventDefault(); // Impede o envio do formulário se o usuário cancelar
+		        return false;
+		    }
+		    return true; // Permite o envio do formulário se o usuário confirmar
+		}
+	</script>
+</body>
+
+</html>

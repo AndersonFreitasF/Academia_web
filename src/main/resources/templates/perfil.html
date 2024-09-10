@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" th:href="@{/estilos.css}">
+    <style>
+        .profile-container {
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .profile-field {
+            width: 100%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-field label {
+            flex: 1;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .profile-field input {
+            flex: 2;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button#save-button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+	<div class="header-custom">
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+    <div class="profile-container">
+        <h1>Perfil do Usuário</h1>
+        <!-- Formulário para atualizar o perfil -->
+        <form id="profile-form">
+            <div class="profile-field">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" th:value="${usuario.nome}" readonly>
+            </div>
+
+            <div class="profile-field">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" th:value="${usuario.email}" readonly>
+            </div>
+
+            <div class="profile-field">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" th:value="${usuario.telefone}" readonly>
+            </div>
+
+            <div class="button-container">
+                <button type="button" id="edit-button" onclick="enableEdit()">Editar</button>
+                <button type="button" id="save-button" onclick="saveProfile()" disabled>Salvar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Função para ativar a edição
+        function enableEdit() {
+            const inputs = document.querySelectorAll('#profile-form input');
+            inputs.forEach(input => input.removeAttribute('readonly'));
+            document.getElementById('save-button').disabled = false;
+        }
+
+        // Função para salvar o perfil via AJAX
+        function saveProfile() {
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/perfil/atualizar', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert('Perfil atualizado com sucesso!');
+                    // Recarregar a página após a atualização
+                    window.location.reload();
+                } else {
+                    alert('Ocorreu um erro ao atualizar o perfil.');
+                }
+            };
+
+            // Enviar os dados do perfil
+            const params = `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&telefone=${encodeURIComponent(telefone)}`;
+            xhr.send(params);
+        }
+    </script>
+</body>
+</html>

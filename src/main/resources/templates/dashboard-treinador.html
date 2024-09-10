@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard do Treinador</title>
+	<!-- Link para o CSS do Bootstrap -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Link para o CSS personalizado -->
+	<link href="/estilos.css" rel="stylesheet">
+</head>
+
+<body>
+	<header class="d-flex justify-content-between align-items-center p-3 mb-3 border-bottom header-custom">
+		<button class="btn btn-custom" th:onclick="|window.location='/perfil'|">Perfil</button>
+		<span class="navbar-brand mx-auto">Nome da Academia</span>
+		<div class="right-buttons">
+			<form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+				<button type="submit" id="logoutButton" class="btn">Logout</button>
+			</form>
+		</div>
+		</div>
+	</header>
+	<div class="dashboard-container container">
+		<div class="card-body">
+			<div class="card-header">
+				<h5 class="card-title">Bem-vindo, <span th:text="${treinadorNome}">Nome do Treinador</span></h5>
+			</div>
+			<div class="dashboard-buttons">
+				<a href="/treinador/criar-treino" class="btn btn-primary btn-lg btn-lg-custom">Criar Treino</a>
+				<a href="/treinador/visualizar_treinos" class="btn btn-success btn-lg btn-lg-custom">Visualizar
+					Treinos</a>
+				<!-- Adicione outros botões conforme necessário -->
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body">
+							<p class="card-text">Aqui você pode gerenciar suas informações e treinos.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Scripts do Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

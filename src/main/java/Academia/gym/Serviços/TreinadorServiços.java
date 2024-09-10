@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import Academia.gym.entities.Treinador;
 import Academia.gym.repositories.TreinadorRepositorio;
+import jakarta.transaction.Transactional;
 
 @Service
 public class TreinadorServiços {
@@ -28,6 +29,10 @@ public class TreinadorServiços {
 		Optional<Treinador> obj = treinadorRepositorio.findById(id);
 		return obj.get();
 	}
+	
+	public Treinador findByEmail(String email) {
+		return treinadorRepositorio.findByEmail(email);
+	}
 public Treinador update(Long id, Treinador obj) {
 		
 		Treinador entity = treinadorRepositorio.getReferenceById(id);
@@ -47,7 +52,21 @@ public Treinador update(Long id, Treinador obj) {
 	public void Delete(Long id) {
 		treinadorRepositorio.deleteById(id);
 	}
+	public Treinador findByNome(String nome) {
+        return treinadorRepositorio.findByNome(nome);
+    }
 	
+	public Treinador findByEmailAndSenha(String email, String senha) {
+	       
+        return treinadorRepositorio.findByEmailAndSenha(email, senha);
 	
+}
+	public void atualizarTreinador(Treinador treinador) {
+        treinadorRepositorio.save(treinador);
+    }
+	@Transactional
+    public int atualizarSenha(String email, String novaSenha) {
+        return treinadorRepositorio.atualizarSenhaPorEmail(email, novaSenha);
+    }
 	
 }

@@ -1,10 +1,7 @@
 package Academia.gym.entities;
 
-
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,110 +13,111 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="tb_pagamento")
+@Table(name = "tb_pagamento")
 public class Pagamento implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-	private Instant dataPagamento;
-	private double preço;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusPagamento status;
-	
-	@OneToOne
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    private LocalDateTime dataCompra;
+
+    private double preco;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento status;
+
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+   
     private Aluno aluno;
-	
-	@ManyToMany
-    private List<Treino> treino = new ArrayList<>();
-	
-	public Pagamento() {
 
-	}
+    @ManyToOne
+    @JoinColumn(name = "treino_id")
+    private Treino treino;
 
-	public Pagamento(Long id, Instant dataPagamento,Aluno aluno,double preço, StatusPagamento status) {
-		this.id = id;
-		this.dataPagamento = dataPagamento;
-		this.preço = preço;
-		this.aluno = aluno;
-		this.status = status;
-	}
+    public Pagamento() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Pagamento(Long id, LocalDateTime dataCompra, Aluno aluno, double preco, StatusPagamento status, Treino treino) {
+        this.id = id;
+        this.dataCompra = dataCompra;
+        this.aluno = aluno;
+        this.preco = preco;
+        this.status = status;
+        this.treino = treino;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Instant getdataPagamento() {
-		return dataPagamento;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setdataPagamento(Instant dataPagamento) {
-		this.dataPagamento = dataPagamento;
-	}
+    public LocalDateTime getDataCompra() {
+        return dataCompra;
+    }
 
+    public void setDataCompra(LocalDateTime dataCompra) {
+        this.dataCompra = dataCompra;
+    }
 
-	public double getPreço() {
-		return preço;
-	}
+    public double getPreco() {
+        return preco;
+    }
 
-	public void setPreço(double preço) {
-		this.preço = preço;
-	}
-	
-	
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
 
-	public StatusPagamento getStatus() {
-		return status;
-	}
+    public StatusPagamento getStatus() {
+        return status;
+    }
 
-	public void setStatus(StatusPagamento status) {
-		this.status = status;
-	}
+    public void setStatus(StatusPagamento status) {
+        this.status = status;
+    }
 
-	public Aluno getAluno() {
-		return aluno;
-	}
+    public Aluno getAluno() {
+        return aluno;
+    }
 
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
 
+    public Treino getTreino() {
+        return treino;
+    }
 
+    public void setTreino(Treino treino) {
+        this.treino = treino;
+    }
 
-	public List<Treino> getTreino() {
-		return treino;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
-	public void setTreino(List<Treino> treino) {
-		this.treino = treino;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pagamento other = (Pagamento) obj;
-		return Objects.equals(id, other.id);
-	}
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Pagamento other = (Pagamento) obj;
+        return Objects.equals(id, other.id);
+    }
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Treino</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/estilos.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .exercise-row {
+            margin-bottom: 15px;
+        }
+
+        .days-checkboxes {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .days-checkboxes label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+	<div class="header-custom">
+	    <div class="left-buttons">
+	        <button id="profileButton" class="btn" onclick="redirectToProfile()">Perfil</button>
+	    </div>
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+    <div class="container">
+        <h2>Editar Treino</h2>
+        <form th:action="@{/treinador/atualizar-treino}" th:object="${treino}" method="post">
+            <!-- Campo oculto para o ID do Treino -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Campo oculto para o ID do Treinador -->
+            <input type="hidden" th:field="*{treinador.id}" />
+
+            <!-- Campos para o Treino -->
+            <div class="form-group">
+                <label for="nome">Nome do Treino:</label>
+                <input type="text" class="form-control" id="nome" name="nome" th:value="${treino.nome}" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição do Treino:</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="3" required th:text="${treino.descricao}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="preco">Preço:</label>
+                <input type="number" class="form-control" id="preco" name="preco" required min="0" step="0.01" th:value="${treino.preco}">
+            </div>
+
+            <!-- Seção de Exercícios -->
+            <h4>Exercícios</h4>
+            <div id="exercicios-container">
+                <div class="exercise-row" th:each="exercicio, iterStat : ${treino.exercicios}">
+                    <!-- Campo oculto para o ID do exercício -->
+                    <input type="hidden" th:name="'exercicios[' + ${iterStat.index} + '].id'" th:value="${exercicio.id}" />
+
+                    <div class="form-row">
+                        <div class="col">
+                            <label th:for="'exercicio-nome-' + ${iterStat.index}">Nome:</label>
+                            <input type="text" class="form-control" th:name="'exercicios[' + ${iterStat.index} + '].nome'" th:value="${exercicio.nome}" required>
+                        </div>
+                        <div class="col">
+                            <label th:for="'exercicio-descricao-' + ${iterStat.index}">Descrição:</label>
+                            <input type="text" class="form-control" th:name="'exercicios[' + ${iterStat.index} + '].descricao'" th:value="${exercicio.descricao}">
+                        </div>
+                        <div class="col">
+                            <label th:for="'exercicio-repeticoes-' + ${iterStat.index}">Repetições:</label>
+                            <input type="text" class="form-control" th:name="'exercicios[' + ${iterStat.index} + '].repeticoes'" th:value="${exercicio.repeticoes}" pattern="^\d+x\d+$" required>
+                        </div>
+                    </div>
+                    <div class="days-checkboxes">
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).SEGUNDA)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="SEGUNDA">Seg</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).TERCA)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="TERCA">Ter</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).QUARTA)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="QUARTA">Qua</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).QUINTA)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="QUINTA">Qui</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).SEXTA)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="SEXTA">Sex</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).SABADO)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="SABADO">Sáb</label>
+                        <label><input type="checkbox" th:checked="${exercicio.diaSemana.contains(T(Academia.gym.Auxiliares.DiasSemana).DOMINGO)}" th:name="'exercicios[' + ${iterStat.index} + '].diaSemana'" value="DOMINGO">Dom</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões para Adicionar/Remover Exercícios -->
+            <button type="button" class="btn btn-primary mt-3" onclick="adicionarExercicio()">Adicionar Exercício</button>
+            <button type="button" class="btn btn-danger mt-3" onclick="removerExercicio()">Remover Último Exercício</button>
+            
+            <!-- Botões para Salvar e Cancelar -->
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a href="/treinador/visualizar_treinos" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let exercicioCount = /*[[${treino.exercicios.size()}]]*/ 0; // Define o número inicial de exercícios
+
+        function adicionarExercicio() {
+            const container = document.getElementById('exercicios-container');
+            const div = document.createElement('div');
+            div.className = 'exercise-row';
+            div.innerHTML =
+                `<div class="form-row">
+                    <div class="col">
+                        <label for="exercicio-nome-${exercicioCount}">Nome:</label>
+                        <input type="text" class="form-control" name="exercicios[${exercicioCount}].nome" required/>
+                    </div>
+                    <div class="col">
+                        <label for="exercicio-descricao-${exercicioCount}">Descrição:</label>
+                        <input type="text" class="form-control" name="exercicios[${exercicioCount}].descricao"/>
+                    </div>
+                    <div class="col">
+                        <label for="exercicio-repeticoes-${exercicioCount}">Repetições:</label>
+                        <input type="text" class="form-control" name="exercicios[${exercicioCount}].repeticoes" pattern="^\\d+x\\d+$" required/>
+                    </div>
+                </div>
+                <div class="days-checkboxes">
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="SEGUNDA">Seg</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="TERCA">Ter</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="QUARTA">Qua</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="QUINTA">Qui</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="SEXTA">Sex</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="SABADO">Sáb</label>
+                    <label><input type="checkbox" name="exercicios[${exercicioCount}].diaSemana" value="DOMINGO">Dom</label>
+                </div>`;
+            container.appendChild(div);
+            exercicioCount++;
+        }
+
+        function removerExercicio() {
+            const container = document.getElementById('exercicios-container');
+            if (container.children.length > 0) {
+                container.removeChild(container.lastChild);
+                exercicioCount--;
+            }
+        }
+    </script>
+</body>
+
+</html>

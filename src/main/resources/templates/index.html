@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/estilos.css"> 
+</head>
+<body>
+    <header class="header-custom">
+        <div class="navbar-brand">MiggyFit</div>
+        <nav>
+            
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <h2 class="text-center mb-4">Bem-vindo!</h2>
+
+     
+        <div id="error-message" class="alert alert-danger d-none" role="alert">
+            <span id="error-text">Erro: Verifique suas credenciais.</span>
+        </div>
+
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" class="form-control input-field" id="email" name="email" placeholder="m@example.com" required>
+            </div>
+            <div class="form-group position-relative">
+                <label for="senha">Senha:</label>
+                <input type="password" class="form-control input-field" id="senha" name="senha" required>
+                <a href="/esqueci-senha" class="forgot-password-link">Esqueci a senha</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block login-btn">Entrar</button>
+            <a href="/aluno/cadastro" class="btn btn-secondary btn-block register-btn">Cadastre-se</a>
+        </form>
+    </main>
+
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+    <script>
+        
+        function showError(message) {
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('error-message').classList.remove('d-none');
+        }
+       
+    </script>
+</body>
+</html>

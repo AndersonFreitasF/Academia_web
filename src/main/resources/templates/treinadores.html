@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinadores</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+	<div class="header-custom">
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+    <div class="container">
+        <h2>Treinadores</h2>
+        <a href="/adm/cadastro-treinador" class="btn btn-primary">Cadastrar Novo Treinador</a>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="treinador : ${treinadores}">
+                    <td th:text="${treinador.id}"></td>
+                    <td th:text="${treinador.nome}"></td>
+                    <td>
+                        <a th:href="@{/adm/excluir-treinador/{id}(id=${treinador.id})}" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

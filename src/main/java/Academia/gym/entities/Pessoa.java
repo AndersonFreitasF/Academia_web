@@ -7,19 +7,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
 @MappedSuperclass
-abstract class Pessoa  implements Serializable {
+abstract class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	Long id;
 	protected String nome;
 	private Integer idade;
 	private String email;
-	
+
 	public Pessoa() {
-		
+
 	}
 
 	public Pessoa(Long id, String nome, Integer idade, String email) {
@@ -52,7 +53,6 @@ abstract class Pessoa  implements Serializable {
 	public void setIdade(Integer idade) {
 		this.idade = idade;
 	}
-	
 
 	public String getEmail() {
 		return email;
@@ -62,22 +62,8 @@ abstract class Pessoa  implements Serializable {
 		this.email = email;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		return Objects.equals(id, other.id);
-	}
+
 	
 
 }

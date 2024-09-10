@@ -1,7 +1,5 @@
 package Academia.gym.Controladores;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,36 +21,49 @@ import Academia.gym.entities.Pagamento;
 @RequestMapping("/pagamentos")
 public class PagamentoController {
 
-    @Autowired
-    private PagamentosServiço pagamentosServiço;
+	@Autowired
+	private PagamentosServiço pagamentosServiço;
 
-    @PostMapping("/comprar")
-    public ResponseEntity<Pagamento> comprarTreino(@RequestBody PagamentoDTO pagamentoDTO) {
-        Pagamento pagamento = pagamentosServiço.comprarTreino(
-            pagamentoDTO.getAlunoId(), 
-            pagamentoDTO.getTreinoId(), 
-            pagamentoDTO.getPreço()
-        );
-        return ResponseEntity.ok(pagamento);
-    }
-    @PutMapping("/{pagamentoId}/status")
-    public ResponseEntity<Pagamento> atualizarStatus(@PathVariable Long pagamentoId, 
-                                                     @RequestParam StatusPagamento novoStatus) {
-        Pagamento pagamento = pagamentosServiço.atualizarStatusPagamento(pagamentoId, novoStatus);
-        return ResponseEntity.ok(pagamento);
-    }
+	@PostMapping("/comprar")
+	public ResponseEntity<Pagamento> comprarTreino(@RequestBody PagamentoDTO pagamentoDTO) {
+		Pagamento pagamento = pagamentosServiço.comprarTreino(pagamentoDTO.getAlunoId(), pagamentoDTO.getTreinoId(),
+				pagamentoDTO.getPreço());
+		return ResponseEntity.ok(pagamento);
+	}
 
-    @GetMapping
-    public ResponseEntity<List<Pagamento>> listarTodos() {
-        List<Pagamento> pagamentos = pagamentosServiço.listarTodos();
-        return ResponseEntity.ok(pagamentos);
-    }
+	@PutMapping("/{pagamentoId}/status")
+	public ResponseEntity<Pagamento> atualizarStatus(@PathVariable Long pagamentoId,
+			@RequestParam StatusPagamento novoStatus) {
+		Pagamento pagamento = pagamentosServiço.atualizarStatusPagamento(pagamentoId, novoStatus);
+		return ResponseEntity.ok(pagamento);
+	}
 
-    @DeleteMapping("/{pagamentoId}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Long pagamentoId) {
-        pagamentosServiço.deletarPorId(pagamentoId);
-        return ResponseEntity.noContent().build();
-    }
-    
-   
+	@GetMapping("/{pagamentoId}/status")
+	public ResponseEntity<StatusPagamento> obterStatus(@PathVariable Long pagamentoId) {
+		Pagamento pagamento = pagamentosServiço.findById(pagamentoId);
+		if (pagamento != null) {
+			return ResponseEntity.ok(pagamento.getStatus());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{pagamentoId}")
+	public ResponseEntity<Void> deletarPorId(@PathVariable Long pagamentoId) {
+		pagamentosServiço.deletarPorId(pagamentoId);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/{pagamentoId}/pagar")
+	public ResponseEntity<Pagamento> pagarPagamento(@PathVariable Long pagamentoId) {
+		Pagamento pagamento = pagamentosServiço.findById(pagamentoId);
+		if (pagamento != null) {
+			pagamento.setStatus(StatusPagamento.Pago);
+			pagamentosServiço.atualizarStatusPagamento(pagamentoId, StatusPagamento.Pago);
+			return ResponseEntity.ok(pagamento);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 }

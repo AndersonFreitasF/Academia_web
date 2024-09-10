@@ -1,6 +1,6 @@
 package Academia.gym.Serviços;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PagamentosServiço {
 	    @Autowired
 	    private TreinoRepositorio treinoRepositorio;
 
-	    @SuppressWarnings("unchecked")
+	    
 		public Pagamento comprarTreino(Long alunoId, Long treinoId, double Preço) {
 	        Aluno aluno = alunoRepositorio.findById(alunoId)
 	                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
@@ -34,9 +34,9 @@ public class PagamentosServiço {
 
 	        Pagamento pagamento = new Pagamento();
 	        pagamento.setAluno(aluno);
-			pagamento.setTreino((List<Treino>) treino);
-	        pagamento.setPreço(Preço);
-	        pagamento.setdataPagamento(Instant.now());
+			pagamento.setTreino((Treino) treino);
+	        pagamento.setPreco(Preço);
+	        pagamento.setDataCompra(LocalDateTime.now());
 	        pagamento.setStatus(StatusPagamento.Aguardando_Pagamento);
 
 	        return pagamentoRepositorio.save(pagamento);
@@ -56,6 +56,12 @@ public class PagamentosServiço {
 	    public void deletarPorId(Long pagamentoId) {
 	        pagamentoRepositorio.deleteById(pagamentoId);
 	    }
+	    
+	    public Pagamento save(Pagamento pagamento) {
+	        return pagamentoRepositorio.save(pagamento);
 	}
+	    public Pagamento findById(Long pagamentoId) {
+	        return pagamentoRepositorio.findById(pagamentoId).orElse(null);
+	    }
 
-
+}

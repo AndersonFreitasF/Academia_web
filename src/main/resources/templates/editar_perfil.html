@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" th:href="@{/estilos.css}" />
+</head>
+<body>
+	<div class="header-custom">
+	    <div class="left-buttons">
+	        <button id="profileButton" class="btn" onclick="redirectToProfile()">Perfil</button>
+	    </div>
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+    <div class="container">
+        <h2>Editar Perfil</h2>
+        <form th:action="@{/${usuario instanceof T(Aluno) ? 'aluno' : 'treinador'}/atualizar_perfil}" th:object="${usuario}" method="post">
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" th:field="*{nome}" />
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" />
+            </div>
+            <div>
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" th:field="*{telefone}" />
+            </div>
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <button type="button" onclick="window.location.href='/perfil'" class="btn btn-secondary">Cancelar</button>
+        </form>
+    </div>
+</body>
+</html>

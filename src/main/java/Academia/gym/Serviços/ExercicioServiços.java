@@ -33,7 +33,7 @@ public class ExercicioServiços {
 
 		Exercicio exercicio = new Exercicio();
 		exercicio.setNome(exercicioDTO.getNome());
-		exercicio.setDescrição(exercicio.getDescrição());
+		exercicio.setDescricao(exercicio.getDescricao());
 		return exercicioRepositorio.save(exercicio);
 	}
 

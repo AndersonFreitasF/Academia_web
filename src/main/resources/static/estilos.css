@@ -1,0 +1,396 @@
+:root {
+    --primary-color: #343a40; /* Cor principal (cinza escuro) */
+    --secondary-color: #5a6268; /* Cinza intermediário */
+    --tertiary-color: #6c757d; /* Cinza claro */
+    --quaternary-color: #004d00; /* Verde mais escuro */
+    --quinary-color: #006400; /* Verde mais escuro ainda */
+}
+
+/* Estilo do corpo da página */
+body {
+    font-family: "Bebas Neue", sans-serif;
+    background-image: url('backgorundacademy.png');
+    background-color: var(--tertiary-color);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-top: 70px; /* Ajustes para garantir que o conteúdo fique abaixo da navbar fixa */
+}
+
+/* Estilo do cabeçalho */
+.header-custom {
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 0 0 10px 10px;
+}
+
+nav {
+    margin-top: 16px;
+}
+
+.header-custom .btn {
+    background-color: var(--quaternary-color); /* Cor verde escuro */
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.header-custom .btn:hover {
+    background-color: var(--quinary-color); /* Cor verde mais escuro */
+}
+
+.title-text {
+    display: grid;
+    justify-content: center;
+}
+
+.header-custom .navbar-brand {
+    font-size: 18px;
+    text-align: center;
+    flex-grow: 1;
+    color: #fff;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* Estilo dos containers principais */
+.container, .dashboard-container, .buy-train-container, .profile-container, .exercicios-container{
+    background-color: #fff; /* Cor de fundo sólida para garantir opacidade */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Ajusta a largura do container horizontalmente */
+    max-width: 500px; /* Largura máxima para outros containers */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    gap: 20px; /* Adiciona um espaço uniforme entre os itens */
+}
+
+.ficha-container{
+	/*background-color: #fff;*/
+	/*border-radius: 10px;*/
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+	max-width: 500px;
+    display: flex;
+    flex-direction: column;
+	margin-top: 10px;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    gap: 20px; /* Adiciona um espaço uniforme entre os itens */
+}
+
+.card{
+	border:0px;
+}
+
+.card-body{
+	width: 100%	;
+	padding: 0px;
+}
+
+
+
+/* Estilo específico para o container de 'Comprar Treino' */
+.buy-train-container {
+    width: 90%;
+    max-width: 700px; /* Aumenta a largura máxima específica */
+}
+
+/* Estilo do container de login */
+.login-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px; /* Ajuste conforme necessário */
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 80px; /* Ajuste para separar do cabeçalho */
+}
+
+/* Estilo dos botões de login e cadastro */
+.login-btn, .register-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--quaternary-color); /* Usa a cor do root */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.login-btn:hover, .register-btn:hover {
+    background-color: var(--quinary-color); /* Usa a cor do root */
+}
+
+/* Estilo do link 'Esqueci a senha' */
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    color: var(--quaternary-color);
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Estilo da tabela */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    background-color: var(--quaternary-color);
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    background-color: var(--quaternary-color);
+    color: #fff;
+}
+
+.table tbody tr {
+    border-radius: 10px;
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: #fff;
+}
+
+/* Estilização da tabela de treinos */
+.table-header {
+    background-color: var(--quaternary-color);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    height: 50px;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #e795f3;
+    vertical-align: middle;
+}
+
+/* Botões de ação na tabela */
+.btn-info, .btn-success {
+    width: 120px;
+    background-color: var(--quaternary-color); /* Usa a cor do root */
+    color: #fff;
+}
+
+.btn-info {
+    margin-right: 10px;
+}
+
+.btn-info:hover, .btn-success:hover {
+    background-color: var(--quinary-color); /* Usa a cor do root */
+}
+
+/* Modal */
+.modal-content {
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+}
+
+.modal-header {
+    background-color: var(--quaternary-color);
+    color: white;
+}
+
+.modal-footer .btn-primary {
+    background-color: var(--quinary-color);
+    border: none;
+}
+
+.modal-footer .btn-secondary {
+    background-color: var(--secondary-color);
+    border: none;
+}
+
+.modal-footer .btn-primary:hover, 
+.modal-footer .btn-secondary:hover {
+    background-color: var(--quaternary-color);
+}
+
+/* Ajusta o texto dos campos de perfil */
+.profile-field {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.profile-field label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #bfbfbf;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.profile-field input[readonly] {
+    background-color: #e0e0e0;
+    color: #7a7a7a;
+}
+
+/* Estilização dos botões */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Coloca os botões em coluna */
+    width: 100%;
+    gap: 10px; /* Espaço entre os botões */
+    margin-top: 20px;
+}
+
+.button-container button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--quaternary-color); /* Usa a cor do root */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+    background-color: var(--quinary-color); /* Usa a cor do root */
+}
+
+/* Ajuste de botão em coluna */
+.dashboard-buttons a {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: var(--quaternary-color); /* Usa a cor do root */
+    color: #fff;
+    text-decoration: none;
+}
+
+.dashboard-buttons a:hover {
+    background-color: var(--quinary-color); /* Usa a cor do root */
+}
+
+/* Remover a mensagem informativa da página de login */
+.login-container p.info-message {
+    display: none;
+}
+
+.dias-da-semana {
+    display: table-row; /* Definir cada linha */
+    width: 100%;
+}
+
+.dia {
+    display: table-cell; /* Definir cada dia como célula */
+    vertical-align: top;
+    padding: 20px;
+    border: 2px solid var(--primary-color); /* Bordas nas células */
+    border-radius: 10px;
+    text-align: center;
+}
+
+.segunda {
+    background-color: #ff9999; /* Cor da célula para segunda-feira */
+}
+
+.terca {
+    background-color: #ffcc99; /* Cor da célula para terça-feira */
+}
+
+.quarta {
+    background-color: #ffff99; /* Cor da célula para quarta-feira */
+}
+
+.quinta {
+    background-color: #99ff99; /* Cor da célula para quinta-feira */
+}
+
+.sexta {
+    background-color: #99ccff; /* Cor da célula para sexta-feira */
+}
+
+.sabado {
+    background-color: #cc99ff; /* Cor da célula para sábado */
+}
+
+.domingo {
+    background-color: #ff99ff; /* Cor da célula para domingo */
+}
+
+.dia h4 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.dia ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Texto dos exercícios alinhados à esquerda */
+}
+
+/* Ajuste para o botão "Mostrar Treinos" */
+#treinoForm {
+    margin-top: 20px;
+}
+
+#treino {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#treinos-container {
+    margin-top: 10px;
+}

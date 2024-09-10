@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ADM</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+	<div class="header-custom">
+		    <div class="center-title">
+		        <h1>MiggyFit</h1>
+		    </div>
+		    <div class="right-buttons">
+		        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+		            <button type="submit" id="logoutButton" class="btn">Logout</button>
+		        </form>
+		    </div>
+		</div>
+    <div class="container">
+        <h2>Dashboard ADM</h2>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestão de Treinadores</h5>
+                        <p class="card-text">Veja e gerencie os treinadores cadastrados.</p>
+                        <a href="/adm/treinadores" class="btn btn-primary">Ver Treinadores</a>
+                        <a href="/adm/cadastro-treinador" class="btn btn-secondary mt-2">Cadastrar Novo Treinador</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestão de Alunos</h5>
+                        <p class="card-text">Veja e gerencie os alunos cadastrados.</p>
+                        <a href="/adm/alunos" class="btn btn-primary">Ver Alunos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

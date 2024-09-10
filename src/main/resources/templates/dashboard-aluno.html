@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Aluno</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/estilos.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="header-custom">
+	    <div class="left-buttons">
+	        <button id="profileButton" class="btn" onclick="redirectToProfile()">Perfil</button>
+	    </div>
+	    <div class="center-title">
+	        <h1>MiggyFit</h1>
+	    </div>
+	    <div class="right-buttons">
+	        <form id="logoutForm" action="/login/logout" method="post" style="display:inline;">
+	            <button type="submit" id="logoutButton" class="btn">Logout</button>
+	        </form>
+	    </div>
+	</div>
+<div>
+    <div class="dashboard-container container">
+        <div class="card-body">
+            <div class="card-header">
+                <h5 class="card-title">Bem-vindo, <span th:text="${alunoNome}">Nome do Aluno</span></h5>
+            </div>
+            <div class="dashboard-buttons">
+                <a href="/aluno/comprar-treino" class="btn btn-primary btn-lg btn-lg-custom">Comprar Treino</a>
+                <a href="/aluno/carrinho" class="btn btn-info btn-lg btn-lg-custom">Carrinho de Compra</a>
+            </div>
+            <p class="info-text">Nesta página, você pode visualizar sua ficha de treinos, adquirir novos treinos e gerenciar pagamentos.</p>
+        </div>
+    </div>
+
+    <!-- Novo Container para Exercícios da Semana -->
+    <div class="ficha-container container">
+        <div class="card">
+            <div class="card-body">
+                <h3>Exercícios da Semana</h3>
+                <div class="dias-da-semana">
+                    <div class="dia segunda">
+                        <h4>S</h4>
+                        <ul id="segunda">
+                            <!-- Exercícios para Segunda -->
+                        </ul>
+                    </div>
+                    <div class="dia terca">
+                        <h4>T</h4>
+                        <ul id="terca">
+                            <!-- Exercícios para Terça -->
+                        </ul>
+                    </div>
+                    <div class="dia quarta">
+                        <h4>Q</h4>
+                        <ul id="quarta">
+                            <!-- Exercícios para Quarta -->
+                        </ul>
+                    </div>
+                    <div class="dia quinta">
+                        <h4>Q</h4>
+                        <ul id="quinta">
+                            <!-- Exercícios para Quinta -->
+                        </ul>
+                    </div>
+                    <div class="dia sexta">
+                        <h4>S</h4>
+                        <ul id="sexta">
+                            <!-- Exercícios para Sexta -->
+                        </ul>
+                    </div>
+                    <div class="dia sabado">
+                        <h4>S</h4>
+                        <ul id="sabado">
+                            <!-- Exercícios para Sábado -->
+                        </ul>
+                    </div>
+                    <div class="dia domingo">
+                        <h4>D</h4>
+                        <ul id="domingo">
+                            <!-- Exercícios para Domingo -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Formulário para selecionar treino -->
+                <form id="treinoForm" action="/treinos/selecionar-treino" method="post" onsubmit="return handleSubmit()">
+                    <label for="treino">Selecionar Treino:</label>
+                    <button type="button" class="btn btn-primary" onclick="toggleTreinos()">Mostrar Treinos</button>
+                    <div id="treinos-container" style="display: none;">
+                        <select name="treinoId" id="treino">
+                            <!-- Options will be dynamically inserted here -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Selecionar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+	</div>
+
+    <script th:inline="javascript">
+        function redirectToProfile() {
+            var isAluno = /*[[${session.alunoLogado != null}]]*/ false;
+            var isTreinador = /*[[${session.treinadorLogado != null}]]*/ false;
+
+            if (isAluno) {
+                window.location.href = '/aluno/perfil';
+            } else if (isTreinador) {
+                window.location.href = '/treinador/perfil';
+            } else {
+                console.error('Usuário não autenticado ou tipo de usuário desconhecido!');
+            }
+        }
+
+        function toggleTreinos() {
+            var treinosContainer = document.getElementById('treinos-container');
+            
+            if (treinosContainer.style.display === 'none') {
+                treinosContainer.style.display = 'block';
+                loadTreinos();
+            } else {
+                treinosContainer.style.display = 'none';
+            }
+        }
+
+        function loadTreinos() {
+            var alunoId = /*[[${session.alunoLogado.id}]]*/ 1; // Substitua pelo ID real do aluno
+
+            fetch(`/aluno/treinos-pagos?alunoId=${alunoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var selectElement = document.getElementById('treino');
+                    selectElement.innerHTML = ''; // Clear existing options
+
+                    data.forEach(treino => {
+                        var option = document.createElement('option');
+                        option.value = treino.id;
+                        option.textContent = treino.nome;
+                        selectElement.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar treinos:', error));
+        }
+
+        function handleSubmit() {
+            var treinoId = document.getElementById('treino').value;
+
+            if (treinoId) {
+                fetch(`/treinos/selecionar-treino?treinoId=${treinoId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    updateExercicios(data);
+                })
+                .catch(error => console.error('Erro ao selecionar treino:', error));
+
+                // Prevent the form from submitting normalmente
+                return false;
+            }
+
+            return false; // Prevent form submission if no treinoId selected
+        }
+
+        function updateExercicios(data) {
+            const dias = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'];
+            
+            dias.forEach(dia => {
+                const lista = document.getElementById(dia);
+                lista.innerHTML = ''; // Limpa a lista atual
+                
+                if (data[dia.toUpperCase()]) {
+                    data[dia.toUpperCase()].forEach(exercicio => {
+                        const item = document.createElement('li');
+                        item.textContent = `${exercicio.nome}: ${exercicio.repeticoes}`;
+                        lista.appendChild(item);
+                    });
+                } else {
+                    const item = document.createElement('li');
+                    item.textContent = 'Nenhum exercício para este dia';
+                    lista.appendChild(item);
+                }
+            });
+        }
+
+        // Chama a função para carregar os exercícios assim que a página carrega
+        document.addEventListener('DOMContentLoaded', loadExerciciosPorDia);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
