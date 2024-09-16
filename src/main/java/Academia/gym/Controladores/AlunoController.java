@@ -158,7 +158,7 @@ public class AlunoController {
 		return "dashboard-aluno";
 	}
 
-	@GetMapping("/aluno/cadastro")
+	@GetMapping("/cadastro")
 	public String mostrarFormularioCadastro() {
 		return "cadastro-aluno";
 	}
